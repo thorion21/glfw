@@ -1049,8 +1049,6 @@ int _glfwPlatformInit(void)
     char *cursorSizeEnd;
     long cursorSizeLong;
     int cursorSize;
-    int i;
-    _GLFWmonitor* monitor;
 
     _glfw.wl.cursor.handle = _glfw_dlopen("libwayland-cursor.so.0");
     if (!_glfw.wl.cursor.handle)
@@ -1163,17 +1161,6 @@ int _glfwPlatformInit(void)
     if (!_glfwInitJoysticksLinux())
         return GLFW_FALSE;
 #endif
-
-    for (i = 0; i < _glfw.monitorCount; ++i)
-    {
-        monitor = _glfw.monitors[i];
-        if (monitor->widthMM <= 0 || monitor->heightMM <= 0)
-        {
-            // If Wayland does not provide a physical size, assume the default 96 DPI
-            monitor->widthMM  = (int) (monitor->modes[monitor->wl.currentMode].width * 25.4f / 96.f);
-            monitor->heightMM = (int) (monitor->modes[monitor->wl.currentMode].height * 25.4f / 96.f);
-        }
-    }
 
     _glfwInitTimerPOSIX();
 
